@@ -1,16 +1,13 @@
 import React from 'react'
 import cs from 'classnames'
-import format from 'date-fns/format'
+import { format, localeFormat } from 'light-date'
 
 import formatNumber from '../../../format-number'
-import useMounted from '../../../use-mounted'
 
 export default function TweetInfo({ tweet, className = undefined }) {
-  const mounted = useMounted()
   const likeUrl = `https://twitter.com/intent/like?tweet_id=${tweet.id}`
   const tweetUrl = `https://twitter.com/${tweet.username}/status/${tweet.id}`
-  const createdAt =
-    typeof window !== 'undefined' && mounted ? new Date(tweet.createdAt) : null
+  const createdAt = new Date(tweet.createdAt)
 
   return (
     <div className={cs('static-tweet-info', className)}>
@@ -46,7 +43,10 @@ export default function TweetInfo({ tweet, className = undefined }) {
             title={`Time Posted: ${createdAt.toUTCString()}`}
             dateTime={createdAt.toISOString()}
           >
-            {format(createdAt, 'h:mm a - MMM d, y')}
+            {format(
+              createdAt,
+              `{HH}:{mm} - ${localeFormat(createdAt, '{MMM}')} {dd}, {yyyy}`
+            )}
           </time>
         </a>
       )}

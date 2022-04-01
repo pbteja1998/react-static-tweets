@@ -97,18 +97,10 @@ export default {
   },
 
   blockquote(props, components, i) {
-    if (process.env.NEXT_PUBLIC_TWITTER_LOAD_WIDGETS === 'true') {
-      const isEmbeddedTweet = props.className?.includes('twitter-tweet')
+    const ast = props.data?.ast
 
-      if (isEmbeddedTweet) {
-        return <components.EmbeddedTweet {...props} />
-      }
-    } else {
-      const ast = props.data?.ast
-
-      if (ast) {
-        return <components.EmbeddedTweet key={i} ast={ast[0]} />
-      }
+    if (ast) {
+      return <components.EmbeddedTweet key={i} ast={ast[0]} />
     }
 
     return <components.Blockquote key={i} children={props.children} />
